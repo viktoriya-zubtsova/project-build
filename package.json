@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "test": "gulp lint && exit 1",
-    "start": "gulp dev",
     "build": "gulp",
     "postinstall": "gulp"
   },
@@ -46,7 +44,8 @@
     "postcss-reporter": "^7.0.2",
     "postcss-short": "^5.0.0",
     "pre-push": "^0.1.1",
-    "stylelint": "^13.13.1"
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0"
   },
   "dependencies": {
     "gulp-concat": "^2.6.1"

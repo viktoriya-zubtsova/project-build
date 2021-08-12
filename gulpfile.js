@@ -27,23 +27,23 @@ const rulesStyles = require('./stylelintrc.json');
 const config = require('./config');
 
 const paths = {
+	assets: 'src/**/*.png',
+    contextJson: 'src/templates/test.json',
 	src: {
 		dir: 'src/templates',
 		styles: 'src/styles/**/*.css',
-		scripts: 'src/scripts/*.js'
+		scripts: 'src/scripts/*.js',
+		templates: 'src/templates/**/*hbs'
 	},
 	buildDir: 'static',
 	buildNames: {
 		styles: 'index.min.css',
 		scripts: 'index.min.js'
 	},
-	templates: 'src/templates/**/*hbs',
 	lint: {
-		scripts: ['**/*.js', '!node_modules/**/*', '!build/**/*'],
-		styles: ['**/*.css', '!build/**/*']
-	},
-	assets: 'src/**/*.png',
-    contextJson: 'src/templates/test.json'
+		scripts: ['**/*.js', '!node_modules/**/*', '!static/**/*'],
+		styles: ['**/*.css', '!node_modules/**/*', '!static/**/*']
+	}
 };
 
 switch (config.env) {
@@ -72,21 +72,19 @@ switch (config.env) {
 gulp.task('browser-sync', () => {
 	browserSync.init({
 		server: {
-			baseDir: './'
+			baseDir: './static'
 		}
 	});
 });
 
-
 gulp.task('compile', () => {
-	glob(paths.templates, (err, files) => {
+	glob(paths.src.templates, (err, files) => {
 		if (!err) {
 			const options = {
 				ignorePartials: true,
 				batch: files.map(item => item.slice(0, item.lastIndexOf('/'))),
 				helpers: {
-					capitals: str => str.toUpperCase(),
-					sum: (a, b) => a + b
+					capitals: str => str.toUpperCase()
 				}
 			};
 
@@ -101,7 +99,7 @@ gulp.task('compile', () => {
 });
 
 const plagins = [
-		autoprefixer({overrideBrowserslist: ['last 1 version']}),
+		autoprefixer(),
 		nested()
 	];
 
@@ -166,9 +164,9 @@ gulp.task('assets', () => {
 });
 
 gulp.task('watch', () => {
-    gulp.watch(paths.templates, ['compile'], () => browserSync.reload());
-    gulp.watch(paths.src.styles, ['styles'], () => browserSync.reload());
-    gulp.watch(paths.src.scripts, ['scripts'], () => browserSync.reload());
+    gulp.watch(paths.templates, ['compile'];
+    gulp.watch(paths.src.styles, ['styles']);
+    gulp.watch(paths.src.scripts, ['scripts']);
     gulp.watch(paths.contextJson)
         .on('change', browserSync.reload);
     gulp.watch(`${paths.buildDir}/**/*`)
